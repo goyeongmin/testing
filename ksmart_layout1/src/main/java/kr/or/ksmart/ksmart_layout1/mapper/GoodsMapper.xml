@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="kr.or.ksmart.ksmart_layout1.mapper.GoodsMapper">
+ 	<select	id="getGoodsList" 
+ 	resultType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+ 		SELECT
+ 			 g.g_code 	AS goodsCode 
+			,g.m_id 	AS memberId
+			,g.g_name 	AS goodsName
+			,g.g_cate 	AS goodsCate
+			,g.g_price 	AS goodsPrice
+			,g.g_color 	AS goodsColor
+			,g.g_size 	AS goodsSize
+			,g.g_date 	AS goodsDate
+			,g.g_desc 	AS goodsDesc
+			,m.m_pw 	AS memberPw
+			,m.m_level 	AS memberLevel
+			,m.m_Name 	AS memberName
+			,m.m_email 	AS memberEmail
+		FROM tb_goods g INNER JOIN tb_member m 
+			ON g.m_id = m.m_id
+ 	</select>
+ 	<select	id="getGoodsSearch"
+ 	parameterType="String" 
+ 	resultType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+ 		SELECT
+ 			 g.g_code 	AS goodsCode 
+			,g.m_id 	AS memberId
+			,g.g_name 	AS goodsName
+			,g.g_cate 	AS goodsCate
+			,g.g_price 	AS goodsPrice
+			,g.g_color 	AS goodsColor
+			,g.g_size 	AS goodsSize
+			,g.g_date 	AS goodsDate
+			,g.g_desc 	AS goodsDesc
+			,m.m_pw 	AS memberPw
+			,m.m_level 	AS memberLevel
+			,m.m_Name 	AS memberName
+			,m.m_email 	AS memberEmail
+		FROM tb_goods g INNER JOIN tb_member m 
+			ON g.m_id = m.m_id
+		<if test="sv != null and sv neq ''.toString()">
+			WHERE 
+				${sk} Like CONCAT('%',#{sv},'%')		
+		</if>
+ 	</select>
+ 	
+ 	<select id="getGoodsCodeMax" resultType="int">
+ 		SELECT 
+ 			MAX(CAST(SUBSTRING(g_code,7) AS DECIMAL)) as maxcol 
+		FROM tb_goods
+ 	</select>
+ 	
+ 	<insert	id="addGoods" parameterType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+ 		INSERT INTO tb_goods(
+			 g_code
+			,m_id
+			,g_name
+			,g_cate
+			,g_price
+			,g_color
+			,g_size
+			,g_date
+			,g_desc
+		)VALUES(
+			 #{goodsCode}
+			,#{memberId}
+			,#{goodsName}
+			,#{goodsCate}
+			,#{goodsPrice}
+			,#{goodsColor}
+			,#{goodsSize}
+			,curdate()
+			,#{goodsDesc}
+		)
+ 	</insert>
+ 	
+ 	<insert	id="addGoods1" parameterType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+ 		<selectKey keyProperty="goodsCode" resultType="String" order="BEFORE">
+ 			SELECT 
+ 				CONCAT('goods_', MAX(CAST(SUBSTRING(g_code,7) AS DECIMAL)+1)) AS gCode 
+			FROM tb_goods
+ 		</selectKey>
+ 		
+ 		INSERT INTO tb_goods(
+			 g_code
+			,m_id
+			,g_name
+			,g_cate
+			,g_price
+			,g_color
+			,g_size
+			,g_date
+			,g_desc
+		)VALUES(
+			 #{goodsCode}
+			,#{memberId}
+			,#{goodsName}
+			,#{goodsCate}
+			,#{goodsPrice}
+			,#{goodsColor}
+			,#{goodsSize}
+			,curdate()
+			,#{goodsDesc}
+		)
+ 	</insert>
+ 	
+ 	<select id="getGoodsByCode" parameterType="String" 
+			resultType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		SELECT 
+			 g_code 	AS goodsCode
+			,m_id 		AS memberId
+			,g_name 	AS goodsName
+			,g_cate 	AS goodsCate
+			,g_price 	AS goodsPrice
+			,g_color 	AS goodsColor
+			,g_size 	AS goodsSize
+			,g_date 	AS goodsDate
+			,g_desc 	AS goodsDesc
+		FROM tb_goods
+		WHERE 
+			g_code=#{goodsCode}
+	</select>
+	<update id="modifyGoods" parameterType="kr.or.ksmart.ksmart_layout1.vo.Goods">
+		UPDATE tb_goods
+		SET
+			 g_code	= #{goodsCode}		
+			,g_name	= #{goodsName}
+			,g_cate= #{goodsCate}
+			,g_price= #{goodsPrice}
+			,g_color= #{goodsColor}
+			,g_size= #{goodsSize}
+			,g_date= now()
+			,g_desc= #{goodsDesc}
+		WHERE 
+			 g_code = #{goodsCode}
+	</update>
+		<delete id="delGoods" parameterType="String">
+		DELETE 
+		FROM tb_goods
+		WHERE
+				g_code = #{goodsCode}
+	</delete>
+ </mapper>

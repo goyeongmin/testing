@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>회원목록</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<!-- 검색 -->
+	<div class="form-group">
+	<form action="/memberList" method="post">
+	<label>
+		<select name="sk" class="form-control form-control-sm">
+			<option value="m_id">회원아이디</option>
+			<option value="m_name">회원명</option>
+		</select>
+		</label> 
+		<label>
+		<input type="text" name="sv" class="form-control form-control-sm">
+		</label>
+		<button type="submit" class="btn btn-primary">
+			<i class="fas fa-search fa-sm"></i>
+		</button>
+	</form>
+	</div>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">회원 목록</h6>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+
+				<table border="1" class="table table-bordered" id="dataTable"
+					width="100%" cellspacing="0">
+					<thead>
+						<tr>
+							<td>아이디</td>
+							<td>비밀번호</td>
+							<td>권한</td>
+							<td>이름</td>
+							<td>이메일</td>
+							<td th:if="${session.SLEVEL eq '관리자'}">수정</td>
+							<td th:if="${session.SLEVEL eq '관리자'}">삭제</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="l : ${memberList}">
+							<td th:text="${l.memberId}"></td>
+							<td th:text="${l.memberPw}"></td>
+							<td th:text="${l.memberLevel}"></td>
+							<td th:text="${l.memberName}"></td>
+							<td th:text="${l.memberEmail}"></td>
+							<td th:if="${session.SLEVEL eq '관리자'}">
+								<!-- /modifyMember?memberId="값"&memberPw="값" --> <a
+								th:href="@{/modifyMember(memberId=${l.memberId})}"
+								th:if="${session.SLEVEL eq '관리자'}">수정</a>
+							</td>
+							<td th:if="${session.SLEVEL eq '관리자'}"><a
+								th:href="@{/delMember(memberId=${l.memberId})}"
+								th:if="${session.SLEVEL eq '관리자'}">삭제</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</th:block>
+</html>

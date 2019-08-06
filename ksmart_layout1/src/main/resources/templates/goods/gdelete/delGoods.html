@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>상품삭제</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<form action="/delGoods" method="post">
+	<input type="hidden" name="memberId" th:value="${session.SID}">
+		<table border="1">
+			<tr>
+				<td>삭제 상품코드</td>
+				<td>
+					<input type="text" name="goodsCode" 
+							th:value="${goodsCode}" readonly="readonly">
+				</td>
+			</tr>
+			<tr style="text-align: center;">
+				<td colspan="2">
+					<button type="submit" onclick="if(!confirm('삭제 하시겠습니까?')){return false;}">상품삭제</button>
+				</td>
+			</tr>
+		</table>
+		<label th:if="${result ne null}" th:text="${result}"></label>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</form>
+</th:block>
+</html>

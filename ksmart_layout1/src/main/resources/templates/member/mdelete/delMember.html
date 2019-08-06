@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>회원탈퇴</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<form action="/delMember" method="post">
+		<table border="1">
+			<tr>
+				<td>아이디</td>
+				<td>
+					<input type="text" name="memberId" 
+							th:value="${memberId}" readonly="readonly">
+				</td>
+			</tr>
+			<tr>
+				<td>비밀번호</td>
+				<td>
+					<input type="text" name="memberPw">
+				</td>
+			</tr>
+			<tr style="text-align: center;">
+				<td colspan="2">
+					<button type="submit" onclick="if(!confirm('회원탈퇴를 진행하시겠습니까?')){return false;}">회원탈퇴</button>
+				</td>
+			</tr>
+		</table>
+		<label th:if="${result ne null}" th:text="${result}"></label>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</form>
+</th:block>
+</html>

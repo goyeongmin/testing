@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>상품목록</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<!-- 검색 -->
+	<form action="/getGoodsSearch" method="post">
+	<label>
+		<select name="sk" class="form-control form-control-sm">
+			<option value="g.m_id">회원아이디</option>
+			<option value="m_name">회원명</option>
+			<option value="g_code">상품코드</option>
+			<option value="g_name">상품명</option>
+		</select>
+		</label>
+		 <label>
+		 <input type="text" name="sv" class="form-control form-control-sm">
+		 </label>
+		<button type="submit" class="btn btn-primary">
+			<i class="fas fa-search fa-sm"></i>
+		</button>
+	</form>
+	<div class="card shadow mb-4">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-primary">상품 목록</h6>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+
+				<table border="1" class="table table-bordered" id="goodsTable"
+					width="100%" cellspacing="0">
+					<thead>
+						<tr>
+							<td>아이디</td>
+							<td>비밀번호</td>
+							<td>권한</td>
+							<td>이름</td>
+							<td>이메일</td>
+							<td>상품코드</td>
+							<td>상품명</td>
+							<td>상품카테고리</td>
+							<td>상품가격</td>
+							<td>상품색상</td>
+							<td>상품크기</td>
+							<td>상품등록날짜</td>
+							<td>상품상세설명</td>
+							<td th:if="${session.SLEVEL eq '판매자' || session.SLEVEL eq '관리자'}">수정</td>
+							<td th:if="${session.SLEVEL eq '판매자' || session.SLEVEL eq '관리자'}">삭제</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="list:${goodsList}">
+							<td th:text="${list.memberId}"></td>
+							<td th:text="${list.memberPw}"></td>
+							<td th:text="${list.memberLevel}"></td>
+							<td th:text="${list.memberName}"></td>
+							<td th:text="${list.memberEmail}"></td>
+							<td th:text="${list.goodsCode}"></td>
+							<td th:text="${list.goodsName}"></td>
+							<td th:text="${list.goodsCate}"></td>
+							<td th:text="${list.goodsPrice}"></td>
+							<td th:text="${list.goodsColor}"></td>
+							<td th:text="${list.goodsSize}"></td>
+							<td th:text="${list.goodsDate}"></td>
+							<td th:text="${list.goodsDesc}"></td>
+							<td th:if="${session.SLEVEL eq '판매자' || session.SLEVEL eq '관리자'}">
+								<!-- /modifyMember?memberId="값"&memberPw="값" --> <a
+								th:href="@{/modifyGoods(goodsCode=${list.goodsCode})}"
+								th:if="${session.SLEVEL eq '판매자' || session.SLEVEL eq '관리자'}">수정</a>
+							</td>
+							<td th:if="${session.SLEVEL eq '판매자' || session.SLEVEL eq '관리자'}">
+								<a th:href="@{/delGoods(goodsCode=${list.goodsCode})}"
+								th:if="${session.SLEVEL eq '판매자' || session.SLEVEL eq '관리자'}">삭제</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</th:block>
+</html>
